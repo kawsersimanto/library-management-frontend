@@ -1,6 +1,6 @@
 import { LibraryBig } from "lucide-react";
 import { Link } from "react-router";
-import BookForm from "../book/BookForm";
+import BookDialog from "../book/BookDialog";
 import { ModeToggle } from "../ui/mode-toggle";
 
 const Navbar = () => {
@@ -13,7 +13,7 @@ const Navbar = () => {
             <h2 className="text-2xl font-bold uppercase">Library</h2>
           </Link>
           <div className="flex items-center gap-2">
-            <BookForm />
+            <BookDialog />
             <ModeToggle />
           </div>
         </div>

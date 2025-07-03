@@ -1,40 +1,91 @@
-import { DialogDescription } from "@radix-ui/react-dialog";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import FormInput from "../form/FormInput";
+import FormSelect from "../form/FormSelect";
 import { Button } from "../ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Form } from "../ui/form";
+
+const FormSchema = z.object({
+  title: z.string().min(1, {
+    message: "Book title is required",
+  }),
+  author: z.string().min(1, {
+    message: "Book author is required",
+  }),
+  isbn: z.string().min(1, {
+    message: "Book isbn is required",
+  }),
+  genre: z.enum(
+    ["FICTION", "NON_FICTION", "SCIENCE", "HISTORY", "BIOGRAPHY", "FANTASY"],
+    {
+      message: `Book genre must be "FICTION",
+            "NON_FICTION",
+            "SCIENCE",
+            "HISTORY",
+            "BIOGRAPHY",
+            "FANTASY", `,
+    }
+  ),
+});
 
 const BookForm = () => {
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      title: "",
+      author: "",
+      genre: "FANTASY",
+      isbn: "",
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    console.log(data);
+  };
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="default" className="cursor-pointer">
-          Add Book
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogTitle className="sr-only">Add new book</DialogTitle>
-        <DialogDescription className="sr-only">
-          Add new book to the library.
-        </DialogDescription>
-        <div className="grid gap-4">
-          <div className="grid gap-3">
-            <Label htmlFor="name-1">Name</Label>
-            <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
-          </div>
-          <div className="grid gap-3">
-            <Label htmlFor="username-1">Username</Label>
-            <Input id="username-1" name="username" defaultValue="@peduarte" />
-          </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-5">
+          <FormInput
+            control={form.control}
+            name="title"
+            placeholder="Enter book title"
+            label="Book Title"
+          />
+          <FormInput
+            control={form.control}
+            name="author"
+            placeholder="Enter book author"
+            label="Book Author"
+          />
+          <FormSelect
+            control={form.control}
+            name="genre"
+            placeholder="Select genre"
+            label="Book Genre"
+            options={[
+              { label: "FICTION", value: "FICTION" },
+              { label: "NON_FICTION", value: "NON_FICTION" },
+              { label: "SCIENCE", value: "SCIENCE" },
+              { label: "HISTORY", value: "HISTORY" },
+              { label: "BIOGRAPHY", value: "BIOGRAPHY" },
+              { label: "FANTASY", value: "FANTASY" },
+            ]}
+          />
+          <FormInput
+            control={form.control}
+            name="isbn"
+            placeholder="Enter book isbn"
+            label="# ISBN"
+          />
         </div>
-        <Button type="submit">Submit</Button>
-      </DialogContent>
-    </Dialog>
+        <Button type="submit" className="mt-6">
+          Submit
+        </Button>
+      </form>
+    </Form>
   );
 };
 
