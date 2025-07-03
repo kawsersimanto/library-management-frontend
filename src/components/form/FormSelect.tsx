@@ -14,28 +14,39 @@ import {
   SelectValue,
 } from "../ui/select";
 
-type FormSelectProps<T extends FieldValues> = {
+type FormSelectProps<
+  T extends FieldValues,
+  K extends FieldPath<T> = FieldPath<T>
+> = {
   control: Control<T>;
-  name: FieldPath<T>;
+  name: K;
   label?: string;
   placeholder?: string;
   options: { label: string; value: string }[];
+  valueTransform?: (value: string) => T[K];
 };
 
-const FormSelect = <T extends FieldValues>({
+const FormSelect = <T extends FieldValues, K extends FieldPath<T>>({
   control,
   name,
   label,
   placeholder,
   options,
-}: FormSelectProps<T>) => (
+  valueTransform,
+}: FormSelectProps<T, K>) => (
   <FormField
     control={control}
     name={name}
     render={({ field }) => (
       <FormItem>
         {label && <FormLabel>{label}</FormLabel>}
-        <Select onValueChange={field.onChange} defaultValue={field.value}>
+        <Select
+          onValueChange={(value) => {
+            const transformed = valueTransform ? valueTransform(value) : value;
+            field.onChange(transformed);
+          }}
+          defaultValue={field.value?.toString()}
+        >
           <FormControl>
             <SelectTrigger className="w-full">
               <SelectValue placeholder={placeholder || "Select an option"} />

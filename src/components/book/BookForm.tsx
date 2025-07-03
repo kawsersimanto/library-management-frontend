@@ -45,7 +45,7 @@ const BookForm = () => {
       isbn: "",
       description: "",
       copies: 1,
-      available: undefined,
+      available: true,
     },
   });
 
@@ -111,6 +111,7 @@ const BookForm = () => {
               { label: "Available", value: "true" },
               { label: "Not available", value: "false" },
             ]}
+            valueTransform={(val) => val === "true"}
           />
         </div>
         <Button type="submit" className="mt-6">
