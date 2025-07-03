@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormInput from "../form/FormInput";
 import FormSelect from "../form/FormSelect";
+import FormTextArea from "../form/FormTextArea";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 
@@ -27,6 +28,11 @@ const FormSchema = z.object({
             "FANTASY", `,
     }
   ),
+  description: z.string().optional(),
+  copies: z.coerce.number().min(1, {
+    message: "Minimum 1 copy is required",
+  }),
+  available: z.coerce.boolean(),
 });
 
 const BookForm = () => {
@@ -37,6 +43,9 @@ const BookForm = () => {
       author: "",
       genre: "FANTASY",
       isbn: "",
+      description: "",
+      copies: 1,
+      available: undefined,
     },
   });
 
@@ -79,6 +88,29 @@ const BookForm = () => {
             name="isbn"
             placeholder="Enter book isbn"
             label="# ISBN"
+          />
+          <FormTextArea
+            control={form.control}
+            name="description"
+            label="Book Description"
+            placeholder="Tell us about the book"
+          />
+          <FormInput
+            control={form.control}
+            name="copies"
+            placeholder="Enter book copies"
+            label="Total Copies"
+            type="number"
+          />
+          <FormSelect
+            control={form.control}
+            name="available"
+            placeholder="Select status"
+            label="Book Availability"
+            options={[
+              { label: "Available", value: "true" },
+              { label: "Not available", value: "false" },
+            ]}
           />
         </div>
         <Button type="submit" className="mt-6">

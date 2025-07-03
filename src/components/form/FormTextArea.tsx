@@ -6,23 +6,23 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
-type FormInputProps<T extends FieldValues> = {
+type FormTextAreaProps<T extends FieldValues> = {
   control: Control<T>;
   name: FieldPath<T>;
   label?: string;
   placeholder?: string;
-  type?: React.HTMLInputTypeAttribute; // 'text' | 'email' | 'number' | 'password' | etc.
+  className?: string;
 };
 
-const FormInput = <T extends FieldValues>({
+const FormTextArea = <T extends FieldValues>({
   control,
   name,
   label,
   placeholder,
-  type = "text",
-}: FormInputProps<T>) => (
+  className,
+}: FormTextAreaProps<T>) => (
   <FormField
     control={control}
     name={name}
@@ -30,12 +30,16 @@ const FormInput = <T extends FieldValues>({
       <FormItem>
         {label && <FormLabel>{label}</FormLabel>}
         <FormControl>
-          <Input type={type} placeholder={placeholder} {...field} />
+          <Textarea
+            placeholder={placeholder || ""}
+            className={className}
+            {...field}
+          />
         </FormControl>
-        <FormMessage className="mb-2" />
+        <FormMessage />
       </FormItem>
     )}
   />
 );
 
-export default FormInput;
+export default FormTextArea;
