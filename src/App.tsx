@@ -1,13 +1,14 @@
 import { Outlet } from "react-router";
-import { Button } from "./components/ui/button";
-import { ModeToggle } from "./components/ui/mode-toggle";
+import Footer from "./components/shared/Footer";
+import Navbar from "./components/shared/Navbar";
 
 const App = () => {
   return (
     <>
-      <ModeToggle />
-      <Button>Click Me</Button>
+      <Navbar />
+      {/* <ModeToggle /> */}
       <Outlet />
+      <Footer />
     </>
   );
 };
