@@ -1,9 +1,20 @@
 import { booksData } from "@/constants/books";
+import type { IBook } from "@/types/Book";
 import { formatDate } from "@/utils/formatDate";
 import { getGenreColor } from "@/utils/getGenreColor";
-import { Book, Calendar, Hash, Search } from "lucide-react";
+import {
+  Book,
+  Calendar,
+  Edit,
+  Eye,
+  Hash,
+  MoreHorizontal,
+  Search,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
 import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
@@ -11,6 +22,12 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
 import {
   Select,
@@ -43,6 +60,18 @@ const BookTable = () => {
   });
 
   const genres = Array.from(new Set(booksData.map((book) => book.genre)));
+
+  const handleView = (book: IBook) => {
+    console.log("View book:", book);
+  };
+
+  const handleEdit = (book: IBook) => {
+    console.log("Edit book:", book);
+  };
+
+  const handleDelete = (book: IBook) => {
+    console.log("Delete book:", book);
+  };
 
   return (
     <section className="py-10 px-5">
@@ -94,6 +123,7 @@ const BookTable = () => {
                     <TableHead>Copies</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Last Updated</TableHead>
+                    <TableHead className="w-[70px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -153,6 +183,37 @@ const BookTable = () => {
                             <Calendar className="h-3 w-3" />
                             {formatDate(book.createdAt)}
                           </div>
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={() => handleView(book)}
+                              >
+                                <Eye className="mr-2 h-4 w-4" />
+                                View
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleEdit(book)}
+                              >
+                                <Edit className="mr-2 h-4 w-4" />
+                                Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleDelete(book)}
+                                className="text-red-600 focus:text-red-600"
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     ))
