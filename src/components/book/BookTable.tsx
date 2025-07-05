@@ -1,4 +1,7 @@
-import { useGetBooksQuery } from "@/redux/features/book/bookApi";
+import {
+  useDeleteBookMutation,
+  useGetBooksQuery,
+} from "@/redux/features/book/bookApi";
 import type { IBook } from "@/types/Book";
 import { formatDate } from "@/utils/formatDate";
 import { getGenreColor } from "@/utils/getGenreColor";
@@ -13,6 +16,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
@@ -47,10 +51,13 @@ import {
 
 const BookTable = () => {
   const { data: books } = useGetBooksQuery([]);
+  const [deleteBook] = useDeleteBookMutation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
 
   const booksData = books?.data;
+
+  console.log(booksData);
 
   const filteredBooks = booksData?.filter((book: IBook) => {
     const matchesSearch =
@@ -74,8 +81,17 @@ const BookTable = () => {
     console.log("Edit book:", book);
   };
 
-  const handleDelete = (book: IBook) => {
-    console.log("Delete book:", book);
+  const handleDelete = async (book: IBook) => {
+    const toastId = toast.loading("Deleting Book");
+    try {
+      const res = await deleteBook(book?._id).unwrap();
+      if (res?.success) {
+        toast.success(res.message, { id: toastId });
+      }
+    } catch (error) {
+      toast.error("Failed to delete book.");
+      console.error(error);
+    }
   };
 
   return (
@@ -138,7 +154,7 @@ const BookTable = () => {
                         colSpan={7}
                         className="text-center py-8 text-muted-foreground"
                       >
-                        No books found matching your criteria
+                        No books found
                       </TableCell>
                     </TableRow>
                   ) : (
