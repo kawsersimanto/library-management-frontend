@@ -1,4 +1,4 @@
-import { booksData } from "@/constants/books";
+import { useGetBooksQuery } from "@/redux/features/book/bookApi";
 import type { IBook } from "@/types/Book";
 import { formatDate } from "@/utils/formatDate";
 import { getGenreColor } from "@/utils/getGenreColor";
@@ -46,10 +46,13 @@ import {
 } from "../ui/table";
 
 const BookTable = () => {
+  const { data: books } = useGetBooksQuery([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
 
-  const filteredBooks = booksData.filter((book) => {
+  const booksData = books?.data;
+
+  const filteredBooks = booksData?.filter((book: IBook) => {
     const matchesSearch =
       book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -59,7 +62,9 @@ const BookTable = () => {
     return matchesSearch && matchesGenre;
   });
 
-  const genres = Array.from(new Set(booksData.map((book) => book.genre)));
+  const genres = Array.from(
+    new Set(booksData?.map((book: IBook) => book?.genre))
+  );
 
   const handleView = (book: IBook) => {
     console.log("View book:", book);
@@ -83,7 +88,7 @@ const BookTable = () => {
               Library Books Database
             </CardTitle>
             <CardDescription>
-              Manage and view your library collection with {booksData.length}{" "}
+              Manage and view your library collection with {booksData?.length}{" "}
               books available
             </CardDescription>
           </CardHeader>
@@ -104,7 +109,7 @@ const BookTable = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Genres</SelectItem>
-                  {genres.map((genre) => (
+                  {(genres as string[])?.map((genre) => (
                     <SelectItem key={genre} value={genre}>
                       {genre}
                     </SelectItem>
@@ -127,7 +132,7 @@ const BookTable = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredBooks.length === 0 ? (
+                  {filteredBooks?.length === 0 ? (
                     <TableRow>
                       <TableCell
                         colSpan={7}
@@ -137,40 +142,42 @@ const BookTable = () => {
                       </TableCell>
                     </TableRow>
                   ) : (
-                    filteredBooks.map((book) => (
-                      <TableRow key={book._id} className="hover:bg-muted/50">
+                    filteredBooks?.map((book: IBook) => (
+                      <TableRow key={book?._id} className="hover:bg-muted/50">
                         <TableCell>
                           <div className="text-xs bg-muted px-2 py-1 rounded inline-flex gap-2">
                             <Hash className="h-3 w-3 text-muted-foreground" />
-                            {book.isbn}
+                            {book?.isbn}
                           </div>
                         </TableCell>
                         <TableCell>
                           <div>
                             <div className="font-medium text-sm leading-tight">
-                              {book.title}
+                              {book?.title}
                             </div>
                             <div className="text-xs text-muted-foreground">
-                              {book.author}
+                              {book?.author}
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
                           <Badge
                             variant="secondary"
-                            className={getGenreColor(book.genre)}
+                            className={getGenreColor(book?.genre)}
                           >
-                            {book.genre}
+                            {book?.genre}
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <span className="font-medium">{book.copies}</span>
+                          <span className="font-medium">{book?.copies}</span>
                         </TableCell>
                         <TableCell>
                           <Badge
-                            variant={book.available ? "default" : "destructive"}
+                            variant={
+                              book?.available ? "default" : "destructive"
+                            }
                             className={
-                              book.available
+                              book?.available
                                 ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
                                 : ""
                             }
@@ -181,7 +188,7 @@ const BookTable = () => {
                         <TableCell>
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
                             <Calendar className="h-3 w-3" />
-                            {formatDate(book.createdAt)}
+                            {formatDate(book?.createdAt)}
                           </div>
                         </TableCell>
                         <TableCell>
@@ -224,19 +231,21 @@ const BookTable = () => {
 
             <div className="flex md:flex-row flex-col md:items-center md:gap-0 gap-2 justify-between text-sm text-muted-foreground mt-4">
               <div>
-                Showing {filteredBooks.length} of {booksData.length} books
+                Showing {filteredBooks?.length} of {booksData?.length} books
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <span>
-                    Available: {booksData.filter((b) => b.available).length}
+                    Available:{" "}
+                    {booksData?.filter((b: IBook) => b?.available)?.length}
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                   <span>
-                    Unavailable: {booksData.filter((b) => !b.available).length}
+                    Unavailable:{" "}
+                    {booksData?.filter((b: IBook) => !b?.available)?.length}
                   </span>
                 </div>
               </div>

@@ -1,5 +1,9 @@
+import { addBook } from "@/redux/features/book/bookSlice";
+import type { IBook } from "@/types/Book";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import FormInput from "../form/FormInput";
 import FormSelect from "../form/FormSelect";
@@ -9,6 +13,8 @@ import { Form } from "../ui/form";
 import { FormSchema } from "./BookFormSchema";
 
 const BookForm = () => {
+  const dispatch = useDispatch();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -23,7 +29,15 @@ const BookForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log(data);
+    const book: IBook = {
+      ...data,
+      _id: uuidv4(),
+      description: data.description ?? "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    dispatch(addBook(book));
+    console.log(book);
   };
 
   return (
