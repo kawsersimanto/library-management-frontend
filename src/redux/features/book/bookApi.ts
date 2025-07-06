@@ -1,4 +1,5 @@
 import { baseApi } from "@/redux/api/baseApi";
+import type { IBook } from "@/types/Book";
 
 const bookApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -22,6 +23,20 @@ const bookApi = baseApi.injectEndpoints({
         url: `/books/${bookId}`,
         method: "DELETE",
       }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          bookApi.util.updateQueryData("getBooks", [], (draft) => {
+            if (draft?.data) {
+              draft.data = draft.data.filter((book: IBook) => book._id !== id);
+            }
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ["books"],
     }),
   }),

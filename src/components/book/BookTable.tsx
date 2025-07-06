@@ -87,6 +87,8 @@ const BookTable = () => {
       const res = await deleteBook(book?._id).unwrap();
       if (res?.success) {
         toast.success(res.message, { id: toastId });
+      } else {
+        toast.error(res.message, { id: toastId });
       }
     } catch (error) {
       toast.error("Failed to delete book.");
