@@ -74,8 +74,8 @@ const BookTable = () => {
     new Set(booksData?.map((book: IBook) => book?.genre))
   );
 
-  const handleView = async (book: IBook) => {
-    const id = await book?._id;
+  const handleView = (book: IBook) => {
+    const id = book?._id;
     navigate(`/book/${id}`);
   };
 
@@ -84,13 +84,11 @@ const BookTable = () => {
   };
 
   const handleDelete = async (book: IBook) => {
-    const toastId = toast.loading("Deleting Book");
+    const res = await deleteBook(book?._id).unwrap();
+    toast.success("Book Deleted Successfully");
     try {
-      const res = await deleteBook(book?._id).unwrap();
-      if (res?.success) {
-        toast.success(res.message, { id: toastId });
-      } else {
-        toast.error(res.message, { id: toastId });
+      if (!res?.success) {
+        toast.error(res.message);
       }
     } catch (error) {
       toast.error("Failed to delete book.");
