@@ -30,20 +30,17 @@ const BookForm = () => {
   const onSubmit = async (
     data: Omit<IBook, "_id" | "createdAt" | "updatedAt">
   ) => {
-    const toastId = toast.loading("Creating book");
     const res = await createBook(data).unwrap();
+    toast.success("Book Created Successfully");
+    form.reset();
 
     try {
-      if (res?.success) {
-        toast.success(res?.message, { id: toastId });
-        form.reset();
-      } else {
-        toast.error(res?.message, { id: toastId });
+      if (!res?.success) {
+        toast.error(res?.message);
       }
     } catch (error) {
       console.log(error);
     }
-    console.log(data);
   };
 
   return (

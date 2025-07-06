@@ -16,6 +16,37 @@ const bookApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        const tempId = `temp-${Date.now()}`;
+
+        const patchResult = dispatch(
+          bookApi.util.updateQueryData("getBooks", [], (draft) => {
+            if (draft?.data) {
+              draft.data.unshift({
+                _id: tempId,
+                ...arg,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+              });
+            }
+          })
+        );
+
+        try {
+          const { data: result } = await queryFulfilled;
+
+          dispatch(
+            bookApi.util.updateQueryData("getBooks", [], (draft) => {
+              if (draft?.data) {
+                draft.data = draft.data.filter((b: IBook) => b._id !== tempId);
+                draft.data.unshift(result.data);
+              }
+            })
+          );
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ["books"],
     }),
     deleteBook: builder.mutation({
