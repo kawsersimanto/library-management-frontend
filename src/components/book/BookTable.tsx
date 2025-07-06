@@ -58,8 +58,6 @@ const BookTable = () => {
 
   const booksData = books?.data;
 
-  console.log(booksData);
-
   const filteredBooks = booksData?.filter((book: IBook) => {
     const matchesSearch =
       book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
