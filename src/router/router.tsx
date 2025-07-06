@@ -1,15 +1,20 @@
-import App from "@/App";
-import Tasks from "@/app/tasks/Tasks";
+import BookDetails from "@/app/book-details/BookDetails";
+import Root from "@/app/Root";
+import BookTable from "@/components/book/BookTable";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Root />,
     children: [
       {
-        path: "/tasks",
-        element: <Tasks />,
+        element: <BookTable />,
+        index: true,
+      },
+      {
+        path: "/book/:bookId",
+        element: <BookDetails />,
       },
     ],
   },
