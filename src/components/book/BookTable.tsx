@@ -16,8 +16,9 @@ import {
   Trash2,
 } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
-import BarsLoading from "../loading/BarsLoading";
+import BarsLoading from "../book-loading/BarsLoading";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
@@ -52,6 +53,7 @@ import {
 
 const BookTable = () => {
   const { data: books, isLoading: isBooksLoading } = useGetBooksQuery([]);
+  const navigate = useNavigate();
   const [deleteBook] = useDeleteBookMutation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
@@ -72,8 +74,9 @@ const BookTable = () => {
     new Set(booksData?.map((book: IBook) => book?.genre))
   );
 
-  const handleView = (book: IBook) => {
-    console.log("View book:", book);
+  const handleView = async (book: IBook) => {
+    const id = await book?._id;
+    navigate(`/book/${id}`);
   };
 
   const handleEdit = (book: IBook) => {
