@@ -1,0 +1,76 @@
+@keyframes bars-loading {
+  0%,
+  100% {
+    transform: scaleY(0.5);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.bars-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.bar {
+  border-radius: 0.125rem;
+  transform-origin: bottom;
+  animation: bars-loading 0.8s infinite;
+}
+
+.bar-1 {
+  animation-delay: 0s;
+}
+
+.bar-2 {
+  animation-delay: 0.1s;
+}
+
+.bar-3 {
+  animation-delay: 0.2s;
+}
+
+.bar-4 {
+  animation-delay: 0.3s;
+}
+
+/* Size variants */
+.bar-sm {
+  width: 0.25rem;
+  height: 1rem;
+}
+
+.bar-md {
+  width: 0.375rem;
+  height: 2rem;
+}
+
+.bar-lg {
+  width: 0.5rem;
+  height: 3rem;
+}
+
+/* Color variants */
+.bar-blue {
+  background-color: rgb(37 99 235);
+}
+
+.bar-red {
+  background-color: rgb(239 68 68);
+}
+
+.bar-green {
+  background-color: rgb(34 197 94);
+}
+
+.bar-purple {
+  background-color: rgb(168 85 247);
+}
+
+.bar-orange {
+  background-color: rgb(249 115 22);
+}

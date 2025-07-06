@@ -1,3 +1,8 @@
+import {
+  selectDialog,
+  setBookDialog,
+} from "@/redux/features/dialog/dialogSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
 import {
@@ -9,8 +14,13 @@ import {
 import BookForm from "./BookForm";
 
 const BookDialog = () => {
+  const dispatch = useAppDispatch();
+  const { bookDialogOpen } = useAppSelector(selectDialog);
   return (
-    <Dialog>
+    <Dialog
+      open={bookDialogOpen}
+      onOpenChange={(val) => dispatch(setBookDialog(val))}
+    >
       <DialogTrigger asChild>
         <Button variant="default" className="cursor-pointer">
           Add Book

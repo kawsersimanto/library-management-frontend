@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import BarsLoading from "../loading/BarsLoading";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
@@ -50,7 +51,7 @@ import {
 } from "../ui/table";
 
 const BookTable = () => {
-  const { data: books } = useGetBooksQuery([]);
+  const { data: books, isLoading: isBooksLoading } = useGetBooksQuery([]);
   const [deleteBook] = useDeleteBookMutation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
@@ -150,7 +151,13 @@ const BookTable = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredBooks?.length === 0 ? (
+                  {isBooksLoading ? (
+                    <TableRow>
+                      <TableCell colSpan={7}>
+                        <BarsLoading className="py-5" />
+                      </TableCell>
+                    </TableRow>
+                  ) : filteredBooks?.length === 0 ? (
                     <TableRow>
                       <TableCell
                         colSpan={7}

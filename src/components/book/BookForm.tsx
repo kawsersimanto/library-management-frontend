@@ -1,4 +1,6 @@
 import { useCreateBookMutation } from "@/redux/features/book/bookApi";
+import { setBookDialog } from "@/redux/features/dialog/dialogSlice";
+import { useAppDispatch } from "@/redux/hook";
 import type { IBook } from "@/types/Book";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,6 +15,7 @@ import { FormSchema } from "./BookFormSchema";
 
 const BookForm = () => {
   const [createBook] = useCreateBookMutation();
+  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -30,9 +33,10 @@ const BookForm = () => {
   const onSubmit = async (
     data: Omit<IBook, "_id" | "createdAt" | "updatedAt">
   ) => {
-    const res = await createBook(data).unwrap();
-    toast.success("Book Created Successfully");
+    dispatch(setBookDialog(false));
     form.reset();
+    toast.success("Book Created Successfully");
+    const res = await createBook(data).unwrap();
 
     try {
       if (!res?.success) {
