@@ -1,9 +1,8 @@
-import { addBook } from "@/redux/features/book/bookSlice";
+import { useCreateBookMutation } from "@/redux/features/book/bookApi";
 import type { IBook } from "@/types/Book";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+import { toast } from "sonner";
 import { z } from "zod";
 import FormInput from "../form/FormInput";
 import FormSelect from "../form/FormSelect";
@@ -13,7 +12,7 @@ import { Form } from "../ui/form";
 import { FormSchema } from "./BookFormSchema";
 
 const BookForm = () => {
-  const dispatch = useDispatch();
+  const [createBook] = useCreateBookMutation();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -28,16 +27,23 @@ const BookForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    const book: IBook = {
-      ...data,
-      _id: uuidv4(),
-      description: data.description ?? "",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    dispatch(addBook(book));
-    console.log(book);
+  const onSubmit = async (
+    data: Omit<IBook, "_id" | "createdAt" | "updatedAt">
+  ) => {
+    const toastId = toast.loading("Creating book");
+    const res = await createBook(data).unwrap();
+
+    try {
+      if (res?.success) {
+        toast.success(res?.message, { id: toastId });
+        form.reset();
+      } else {
+        toast.error(res?.message, { id: toastId });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(data);
   };
 
   return (
