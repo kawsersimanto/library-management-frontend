@@ -80,7 +80,7 @@ const BookTable = () => {
   };
 
   const handleEdit = (book: IBook) => {
-    console.log("Edit book:", book);
+    navigate(`/book/edit/${book?._id}`);
   };
 
   const handleDelete = async (book: IBook) => {

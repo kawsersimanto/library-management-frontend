@@ -2,7 +2,7 @@ export interface IBook {
   _id: string;
   title: string;
   author: string;
-  genre: string;
+  genre: Genre;
   isbn: string;
   copies: number;
   description?: string;
@@ -10,3 +10,11 @@ export interface IBook {
   createdAt: string;
   updatedAt: string;
 }
+
+export type Genre =
+  | "FICTION"
+  | "NON_FICTION"
+  | "SCIENCE"
+  | "HISTORY"
+  | "BIOGRAPHY"
+  | "FANTASY";
