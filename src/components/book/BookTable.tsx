@@ -7,6 +7,7 @@ import { formatDate } from "@/utils/formatDate";
 import { getGenreColor } from "@/utils/getGenreColor";
 import {
   Book,
+  BookCheck,
   Calendar,
   Edit,
   Eye,
@@ -81,6 +82,10 @@ const BookTable = () => {
 
   const handleEdit = (book: IBook) => {
     navigate(`/book/edit/${book?._id}`);
+  };
+
+  const handleBorrow = (book: IBook) => {
+    navigate(`/borrow-book/${book?._id}`);
   };
 
   const handleDelete = async (book: IBook) => {
@@ -235,6 +240,12 @@ const BookTable = () => {
                               >
                                 <Edit className="mr-2 h-4 w-4" />
                                 Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleBorrow(book)}
+                              >
+                                <BookCheck className="mr-2 h-4 w-4" />
+                                Borrow
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => handleDelete(book)}
