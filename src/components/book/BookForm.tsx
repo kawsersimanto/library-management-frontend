@@ -14,7 +14,7 @@ import { Form } from "../ui/form";
 import { FormSchema } from "./BookFormSchema";
 
 const BookForm = () => {
-  const [createBook] = useCreateBookMutation();
+  const [createBook, { isLoading: isCreatingBook }] = useCreateBookMutation();
   const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -108,8 +108,8 @@ const BookForm = () => {
             valueTransform={(val) => val === "true"}
           />
         </div>
-        <Button type="submit" className="mt-6">
-          Submit
+        <Button disabled={isCreatingBook} type="submit" className="mt-6">
+          {isCreatingBook ? "Submitting" : "Submit"}
         </Button>
       </form>
     </Form>
