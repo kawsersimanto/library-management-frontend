@@ -106,7 +106,11 @@ const BookBorrowingForm = ({ book }: { book: IBook }) => {
               </p>
               <div className="flex gap-2">
                 <Badge variant="secondary">{book.genre}</Badge>
-                <Badge variant="outline">{book.copies} available</Badge>
+                <Badge variant="outline">
+                  {book.copies > 0
+                    ? `${book.copies} Available`
+                    : "Not Available"}
+                </Badge>
               </div>
             </div>
           </div>
@@ -193,13 +197,21 @@ const BookBorrowingForm = ({ book }: { book: IBook }) => {
                 </Popover>
               </div>
 
-              <Button type="submit" disabled={isBorrowingBook}>
+              <Button
+                type="submit"
+                disabled={!book?.available || isBorrowingBook}
+              >
                 {isBorrowingBook
                   ? "Processing..."
                   : `Borrow ${form.watch("quantity")} Book${
                       form.watch("quantity") > 1 ? "s" : ""
                     }`}
               </Button>
+              {!book?.available && (
+                <p className="text-sm text-red-500 mt-5">
+                  This book is currently not available for borrowing.
+                </p>
+              )}
             </form>
           </Form>
         </CardContent>

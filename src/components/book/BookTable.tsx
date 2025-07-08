@@ -242,6 +242,7 @@ const BookTable = () => {
                                 Edit
                               </DropdownMenuItem>
                               <DropdownMenuItem
+                                disabled={!book?.available}
                                 onClick={() => handleBorrow(book)}
                               >
                                 <BookCheck className="mr-2 h-4 w-4" />
