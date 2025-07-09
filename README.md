@@ -1,69 +1,64 @@
-# React + TypeScript + Vite
+# 📚 Minimal Library Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean and functional **frontend application** for managing a library, built with **React**, **Redux Toolkit Query (RTK Query)**, and **TypeScript**. This project is focused on core book and borrowing features and interacts seamlessly with a RESTful API. It does **not** include authentication, category filters, or payment integration, keeping things minimal and efficient.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+### 📘 Book Management
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **View All Books** in a responsive table layout.
+- **Add Book** form with fields:
+  - Title, Author, Genre, ISBN, Description, Copies, and Availability (defaults to true).
+- **Edit Book**:
+  - Opens a form pre-filled with existing book data.
+  - On submission, updates are reflected immediately in the UI.
+  - If `copies` is set to `0`, the book is marked as **unavailable**.
+- **Delete Book**:
+  - Includes confirmation before deletion.
+- **Borrow Book**:
+  - Allows users to borrow available copies of a book.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 🔄 Borrowing Flow
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- Users can **borrow books** via a form from the book list.
+- Fields:
+  - Quantity (must not exceed available copies)
+  - Due Date
+- Submits to API and automatically updates availability.
+- Redirects to **Home** on success.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 📊 Borrow Summary
+
+- Aggregated view of borrowed books:
+  - Columns: Book Title, ISBN, Total Quantity Borrowed.
+- Retrieved via aggregation API endpoint.
+
+---
+
+## 🧩 Tech Stack
+
+- **React** (with functional components and hooks)
+- **Redux Toolkit Query (RTK Query)** for API interactions
+- **TypeScript** for type safety
+- **Tailwind CSS / Shadcn UI** (assumed for styling if used)
+
+---
+
+## 🧪 How to Run
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🎯 Goals
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Demonstrate core CRUD operations and borrowing logic
+- Showcase usage of RTK Query and React best practices
+- Provide a minimal yet functional library interface
