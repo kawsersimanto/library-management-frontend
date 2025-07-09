@@ -7,7 +7,6 @@ import {
   Mail,
   MapPin,
   Phone,
-  Twitter,
 } from "lucide-react";
 import { Link } from "react-router";
 
@@ -30,35 +29,32 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               <Link
-                to="/"
+                to="https://www.facebook.com/kawsersimantoo"
+                target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <Facebook className="w-5 h-5" />
                 <span className="sr-only">Facebook</span>
               </Link>
               <Link
-                to="/"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Twitter className="w-5 h-5" />
-                <span className="sr-only">Twitter</span>
-              </Link>
-              <Link
-                to="/"
+                to="https://www.instagram.com/kawsersimanto/"
+                target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <Instagram className="w-5 h-5" />
                 <span className="sr-only">Instagram</span>
               </Link>
               <Link
-                to="/"
+                to="https://www.linkedin.com/in/kawsersimanto/"
+                target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <Linkedin className="w-5 h-5" />
                 <span className="sr-only">LinkedIn</span>
               </Link>
               <Link
-                to="/"
+                to="https://github.com/kawsersimanto"
+                target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <Github className="w-5 h-5" />
@@ -154,23 +150,23 @@ export default function Footer() {
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-muted-foreground" />
                 <span className="text-muted-foreground text-sm">
-                  hello@acmecorp.com
+                  kawsersimanto@gmail.com
                 </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-muted-foreground" />
                 <span className="text-muted-foreground text-sm">
-                  +1 (555) 123-4567
+                  0153 4937 222
                 </span>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin className="w-4 h-4 text-muted-foreground mt-0.5" />
                 <span className="text-muted-foreground text-sm">
-                  123 Business Ave
+                  122/2, New Jurain, Alambagh,
                   <br />
-                  Suite 100
+                  Shampur, Gendaria TSO
                   <br />
-                  San Francisco, CA 94105
+                  Dhaka-1204, Bangladesh
                 </span>
               </div>
             </div>
