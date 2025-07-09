@@ -13,6 +13,12 @@ const Navbar = () => {
             <h2 className="text-2xl font-bold uppercase">Library</h2>
           </Link>
           <div className="flex items-center gap-2">
+            <Link
+              to="/summary"
+              className="rounded-md text-sm font-medium px-4 py-2 border border-slate-500"
+            >
+              Summary
+            </Link>
             <BookDialog />
             <ModeToggle />
           </div>
